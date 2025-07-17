@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'main_shell.dart';
 import 'models.dart' as app_models;
 import 'auth_service.dart';
+import 'file_upload_widget.dart';
 
 /* ----------------------------------------------------------
    AUTH GATE
@@ -58,7 +59,7 @@ class _LoginOrSignupPageState extends State<LoginOrSignupPage> {
 }
 
 /* ----------------------------------------------------------
-   AUTH PAGE - Redesigned UI
+   AUTH PAGE - Minimalistic & Aesthetic Design
 ---------------------------------------------------------- */
 class _AuthPage extends StatefulWidget {
   final bool showLoginPage;
@@ -118,180 +119,153 @@ class _AuthPageState extends State<_AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              const Color(0xFFF8F9FA),
-              Colors.blue.shade50,
-              const Color(0xFFF8F9FA),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 400),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(28),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 30,
-                      offset: const Offset(0, 15),
-                      spreadRadius: 0,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 60),
+                  
+                  // AhamAI Logo - Simple black text as requested
+                  Text(
+                    'AhamAI', 
+                    style: GoogleFonts.pacifico(
+                      fontSize: 48, 
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
                     ),
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                      spreadRadius: 0,
+                  ),
+                  
+                  const SizedBox(height: 12),
+                  
+                  // Simple underline
+                  Container(
+                    height: 2,
+                    width: 60,
+                    color: Colors.blue.shade600,
+                  ),
+                  
+                  const SizedBox(height: 40),
+                  
+                  Text(
+                    widget.showLoginPage 
+                        ? 'Welcome back' 
+                        : 'Create your account',
+                    style: GoogleFonts.inter(
+                      fontSize: 24, 
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(40.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Keep the original AhamAI logo font but enhance it
-                    ShaderMask(
-                      shaderCallback: (bounds) => LinearGradient(
-                        colors: [Colors.blue.shade600, Colors.purple.shade600],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ).createShader(bounds),
-                      child: Text(
-                        'AhamAI', 
-                        style: GoogleFonts.pacifico(
-                          fontSize: 48, 
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                  ),
+                  
+                  const SizedBox(height: 8),
+                  
+                  Text(
+                    widget.showLoginPage 
+                        ? 'Sign in to continue' 
+                        : 'Join AhamAI today',
+                    style: GoogleFonts.inter(
+                      fontSize: 16, 
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w400,
                     ),
-                    const SizedBox(height: 12),
-                    Container(
-                      height: 3,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.blue.shade600, Colors.purple.shade600],
-                        ),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      widget.showLoginPage 
-                          ? 'Welcome back! Ready to continue your AI conversations?' 
-                          : 'Join AhamAI and start chatting with amazing AI characters',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16, 
-                        color: Colors.grey.shade600,
-                        height: 1.4,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 40),
+                  ),
+                  
+                  const SizedBox(height: 48),
 
-                    // Use an animated switcher for a smooth transition between forms
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
-                      child: widget.showLoginPage ? _buildLoginForm() : _buildSignupForm(),
-                    ),
-                    
-                    const SizedBox(height: 32),
-                    _isLoading
+                  // Form with animation
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
+                    child: widget.showLoginPage ? _buildLoginForm() : _buildSignupForm(),
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  // Submit button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: _isLoading
                         ? Container(
-                            width: double.infinity,
-                            height: 52,
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(16),
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.grey.shade200),
                             ),
                             child: const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.blue,
-                                strokeWidth: 2,
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.blue,
+                                ),
                               ),
                             ),
                           )
-                        : Container(
-                            width: double.infinity,
-                            height: 52,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Colors.blue.shade600, Colors.purple.shade600],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                        : ElevatedButton(
+                            onPressed: _handleSubmit,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue.shade600,
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blue.withOpacity(0.3),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 6),
-                                ),
-                              ],
                             ),
-                            child: ElevatedButton(
-                              onPressed: _handleSubmit,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                foregroundColor: Colors.white,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                              ),
-                              child: Text(
-                                widget.showLoginPage ? 'Sign In' : 'Sign Up', 
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16, 
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.5,
-                                ),
+                            child: Text(
+                              widget.showLoginPage ? 'Sign In' : 'Create Account', 
+                              style: GoogleFonts.inter(
+                                fontSize: 16, 
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
-                    const SizedBox(height: 32),
+                  ),
+                  
+                  const SizedBox(height: 32),
 
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            widget.showLoginPage ? 'New to AhamAI?' : 'Already have an account?',
-                            style: GoogleFonts.poppins(
-                              color: Colors.grey.shade600,
-                              fontSize: 14,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          GestureDetector(
-                            onTap: widget.onToggle,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                              child: Text(
-                                widget.showLoginPage ? 'Create account' : 'Sign in',
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600, 
-                                  color: Colors.blue.shade600,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                  // Toggle between login/signup
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.showLoginPage ? 'New to AhamAI?' : 'Already have an account?',
+                        style: GoogleFonts.inter(
+                          color: Colors.grey.shade600,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                      const SizedBox(width: 4),
+                      TextButton(
+                        onPressed: widget.onToggle,
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          widget.showLoginPage ? 'Create account' : 'Sign in',
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w600, 
+                            color: Colors.blue.shade600,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 60),
+                ],
               ),
             ),
           ),
@@ -304,8 +278,18 @@ class _AuthPageState extends State<_AuthPage> {
     return Column(
       key: const ValueKey('login'),
       children: [
-        _buildTextField(_emailController, 'Email', Icons.email_outlined),
-        _buildTextField(_passwordController, 'Password', Icons.lock_outline, obscureText: true),
+        _buildTextField(
+          controller: _emailController, 
+          hintText: 'Email', 
+          icon: Icons.email_outlined,
+        ),
+        const SizedBox(height: 16),
+        _buildTextField(
+          controller: _passwordController, 
+          hintText: 'Password', 
+          icon: Icons.lock_outline, 
+          obscureText: true,
+        ),
       ],
     );
   }
@@ -314,63 +298,100 @@ class _AuthPageState extends State<_AuthPage> {
     return Column(
       key: const ValueKey('signup'),
       children: [
-        _buildTextField(_nameController, 'Name', Icons.person_outline),
-        _buildTextField(_emailController, 'Email', Icons.email_outlined),
-        _buildTextField(_passwordController, 'Password', Icons.lock_outline, obscureText: true),
-        const SizedBox(height: 12),
-        Text(
-          'Choose your Avatar', 
-          style: GoogleFonts.poppins(
-            fontSize: 16, 
-            color: Colors.grey.shade700,
-            fontWeight: FontWeight.w600,
-          ),
+        _buildTextField(
+          controller: _nameController, 
+          hintText: 'Full Name', 
+          icon: Icons.person_outline,
         ),
         const SizedBox(height: 16),
-        _buildAvatarSelector(),
+        _buildTextField(
+          controller: _emailController, 
+          hintText: 'Email', 
+          icon: Icons.email_outlined,
+        ),
+        const SizedBox(height: 16),
+        _buildTextField(
+          controller: _passwordController, 
+          hintText: 'Password', 
+          icon: Icons.lock_outline, 
+          obscureText: true,
+        ),
+        const SizedBox(height: 24),
+        
+        // Avatar selector
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Choose Avatar', 
+              style: GoogleFonts.inter(
+                fontSize: 14, 
+                color: Colors.grey.shade700,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildAvatarSelector(),
+          ],
+        ),
       ],
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String hintText, IconData icon, {bool obscureText = false}) {
+  Widget _buildTextField({
+    required TextEditingController controller, 
+    required String hintText, 
+    required IconData icon, 
+    bool obscureText = false,
+  }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
       child: TextField(
         controller: controller,
         obscureText: obscureText,
-        style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
+        style: GoogleFonts.inter(
+          fontSize: 15, 
+          fontWeight: FontWeight.w400,
+          color: Colors.black87,
+        ),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: GoogleFonts.poppins(
+          hintStyle: GoogleFonts.inter(
             color: Colors.grey.shade500,
             fontSize: 15,
             fontWeight: FontWeight.w400,
           ),
-          prefixIcon: Container(
-            margin: const EdgeInsets.only(right: 12),
-            child: Icon(
-              icon, 
-              color: Colors.grey.shade600, 
-              size: 22,
-            ),
+          prefixIcon: Icon(
+            icon, 
+            color: Colors.grey.shade600, 
+            size: 20,
           ),
-          filled: true,
-          fillColor: const Color(0xFFF8F9FA),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: Colors.grey.shade200),
+          suffixIcon: FileUploadWidget(
+            onFilesUploaded: (content) {
+              // Handle uploaded files content for AI processing
+              print('Files uploaded for AI: $content');
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Files uploaded and ready for AI processing'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            },
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: Colors.grey.shade200),
-          ),
+          filled: false,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: Colors.blue.shade600, width: 2),
           ),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: Colors.red, width: 2),
           ),
         ),
@@ -382,8 +403,8 @@ class _AuthPageState extends State<_AuthPage> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade200),
       ),
       child: Row(
@@ -392,25 +413,17 @@ class _AuthPageState extends State<_AuthPage> {
           final isSelected = _selectedAvatarUrl == url;
           return GestureDetector(
             onTap: () => setState(() => _selectedAvatarUrl = url),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
+            child: Container(
               padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: isSelected ? Colors.blue.shade600 : Colors.grey.shade300,
-                  width: isSelected ? 3 : 1.5,
+                  width: isSelected ? 2.5 : 1,
                 ),
-                boxShadow: isSelected ? [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ] : null,
               ),
               child: CircleAvatar(
-                radius: 28, 
+                radius: 24, 
                 backgroundImage: NetworkImage(url),
               ),
             ),
@@ -422,7 +435,7 @@ class _AuthPageState extends State<_AuthPage> {
 }
 
 /* ----------------------------------------------------------
-   PROFILE PAGE (NEW COMPACT & MODERN DESIGN)
+   PROFILE PAGE (UPDATED MINIMALISTIC DESIGN)
 ---------------------------------------------------------- */
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -439,16 +452,23 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (context) {
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Select an Avatar', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+              Text(
+                'Select an Avatar', 
+                style: GoogleFonts.inter(
+                  fontSize: 18, 
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                )
+              ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -458,11 +478,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       await _auth.updateAvatar(url);
                       if (mounted) Navigator.pop(context);
                     },
-                    child: CircleAvatar(radius: 35, backgroundImage: NetworkImage(url)),
+                    child: CircleAvatar(radius: 32, backgroundImage: NetworkImage(url)),
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 16),
             ],
           ),
         );
@@ -472,96 +492,112 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Color(0xFFF7F7F7),
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF7F7F7),
-        appBar: AppBar(
-          title: const Text('Profile'),
-          centerTitle: true,
-          backgroundColor: const Color(0xFFF7F7F7),
-          elevation: 0,
-          scrolledUnderElevation: 0,
-          foregroundColor: Colors.black87,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: GoogleFonts.inter(
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
         ),
-        body: ValueListenableBuilder<app_models.User?>(
-          valueListenable: _auth.currentUser,
-          builder: (context, user, child) {
-            if (user == null) return const Center(child: CircularProgressIndicator());
-            
-            return Stack(
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        foregroundColor: Colors.black87,
+      ),
+      body: ValueListenableBuilder<app_models.User?>(
+        valueListenable: _auth.currentUser,
+        builder: (context, user, child) {
+          if (user == null) return const Center(child: CircularProgressIndicator());
+          
+          return Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                // Profile info
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.grey.shade200),
+                  ),
                   child: Column(
                     children: [
-                      // Unified Profile Card
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 24),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 5))],
-                        ),
-                        child: Column(
-                          children: [
-                            CircleAvatar(radius: 50, backgroundImage: NetworkImage(user.avatarUrl)),
-                            const SizedBox(height: 16),
-                            Text(user.name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 4),
-                            Text(user.email, style: TextStyle(fontSize: 16, color: Colors.grey.shade600)),
-                            const SizedBox(height: 20),
-                            const Divider(indent: 20, endIndent: 20),
-                            _buildProfileOption(
-                              context,
-                              icon: Icons.face_retouching_natural,
-                              text: 'Change Avatar',
-                              onTap: () => _showAvatarPicker(context),
-                            ),
-                          ],
+                      CircleAvatar(radius: 40, backgroundImage: NetworkImage(user.avatarUrl)),
+                      const SizedBox(height: 16),
+                      Text(
+                        user.name, 
+                        style: GoogleFonts.inter(
+                          fontSize: 20, 
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        )
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        user.email, 
+                        style: GoogleFonts.inter(
+                          fontSize: 14, 
+                          color: Colors.grey.shade600,
+                        )
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Change avatar button
+                      SizedBox(
+                        width: double.infinity,
+                        child: TextButton.icon(
+                          onPressed: () => _showAvatarPicker(context),
+                          icon: const Icon(Icons.edit, size: 16),
+                          label: Text(
+                            'Change Avatar',
+                            style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                          ),
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.blue.shade600,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                // Sign Out button at the bottom
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 40.0),
-                    child: TextButton.icon(
-                      onPressed: () async => await _auth.signOut(),
-                      icon: const Icon(Icons.logout, color: Colors.redAccent),
-                      label: const Text('Sign Out', style: TextStyle(color: Colors.redAccent, fontSize: 16, fontWeight: FontWeight.w600)),
+                
+                const Spacer(),
+                
+                // Sign out button
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: TextButton.icon(
+                    onPressed: () async => await _auth.signOut(),
+                    icon: const Icon(Icons.logout, size: 18),
+                    label: Text(
+                      'Sign Out',
+                      style: GoogleFonts.inter(
+                        fontSize: 16, 
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.red.shade600,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(color: Colors.red.shade600),
+                      ),
                     ),
                   ),
                 ),
+                
+                const SizedBox(height: 32),
               ],
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProfileOption(BuildContext context, {required IconData icon, required String text, required VoidCallback onTap}) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-        child: Row(
-          children: [
-            Icon(icon, color: Colors.grey.shade700),
-            const SizedBox(width: 16),
-            Expanded(child: Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500))),
-            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
-          ],
-        ),
+            ),
+          );
+        },
       ),
     );
   }
